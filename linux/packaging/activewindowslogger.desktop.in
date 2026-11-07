@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Active Windows Logger
+Comment=Logs active windows and the time spent in them
+Exec=@CMAKE_INSTALL_FULL_BINDIR@/activewindowslogger
+Icon=utilities-system-monitor
+Terminal=false
+NoDisplay=true
+Categories=Utility;
+X-GNOME-Autostart-enabled=true

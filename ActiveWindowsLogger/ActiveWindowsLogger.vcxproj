@@ -157,6 +157,11 @@
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="..\common\ActivityLogger.h" />
+    <ClInclude Include="..\common\Settings.h" />
+    <ClInclude Include="..\common\TextUtils.h" />
+    <ClInclude Include="..\common\WindowInfo.h" />
+    <ClInclude Include="..\third_party\SimpleIni\SimpleIni.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActiveWindowsLogger.cpp" />
@@ -168,6 +173,15 @@
     </ClCompile>
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="utils.cpp" />
+    <ClCompile Include="..\common\ActivityLogger.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\common\Settings.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\common\TextUtils.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ActiveWindowsLogger.rc" />
