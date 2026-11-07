@@ -1,0 +1,41 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ pkg-config libx11-dev libxss-dev libsystemd-dev libwayland-dev
+      - name: Build
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build -j
+      - name: Smoke test
+        run: ./build/activewindowslogger --version && ./build/activewindowslogger --help
+      - uses: actions/upload-artifact@v4
+        with:
+          name: activewindowslogger-linux-x86_64
+          path: build/activewindowslogger
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
+      - name: Build (Visual Studio solution)
+        run: msbuild ActiveWindowsLogger.sln /m /p:Configuration=Release /p:Platform=x86 /p:PlatformToolset=v143 /p:WindowsTargetPlatformVersion=10.0
+      - name: Build (CMake)
+        run: |
+          cmake -S . -B build
+          cmake --build build --config Release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ActiveWindowsLogger-windows-x86
+          path: Release/ActiveWindowsLogger.exe

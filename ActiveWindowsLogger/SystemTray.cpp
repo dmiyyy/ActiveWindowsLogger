@@ -5,10 +5,13 @@
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #pragma comment (lib, "comctl32")
 
-#ifdef _DEBUG 
-class __declspec(uuid("C805DD46-663F-426C-8C47-95EF8AB5BFE0")) SystemTrayIconUUID;
-#else 
-class __declspec(uuid("7E17ADC0-2E82-4491-9B9B-4E9B99CCE5B2")) SystemTrayIconUUID;
+// GUID of the tray icon (plain constant instead of __declspec(uuid) so that MinGW can build it too).
+#ifdef _DEBUG
+// {C805DD46-663F-426C-8C47-95EF8AB5BFE0}
+static const GUID kSystemTrayIconGuid = { 0xc805dd46, 0x663f, 0x426c, { 0x8c, 0x47, 0x95, 0xef, 0x8a, 0xb5, 0xbf, 0xe0 } };
+#else
+// {7E17ADC0-2E82-4491-9B9B-4E9B99CCE5B2}
+static const GUID kSystemTrayIconGuid = { 0x7e17adc0, 0x2e82, 0x4491, { 0x9b, 0x9b, 0x4e, 0x9b, 0x99, 0xcc, 0xe5, 0xb2 } };
 #endif
 
 BOOL AddNotificationIcon(HWND hwnd, HINSTANCE hInstance, bool bPaused, bool bUpdate)
@@ -18,7 +21,7 @@ BOOL AddNotificationIcon(HWND hwnd, HINSTANCE hInstance, bool bPaused, bool bUpd
 	// add the icon, setting the icon, tooltip, and callback message.
 	// the icon will be identified with the GUID
 	nid.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE | NIF_SHOWTIP | NIF_GUID;
-	nid.guidItem = __uuidof(SystemTrayIconUUID);
+	nid.guidItem = kSystemTrayIconGuid;
 	nid.uCallbackMessage = WMAPP_NOTIFYCALLBACK;
 	LoadIconMetric(hInstance, MAKEINTRESOURCE(bPaused ? IDI_SMALL_P : IDI_SMALL), LIM_SMALL, &nid.hIcon);
 	LoadString(hInstance, IDS_APP_TITLE, nid.szTip, ARRAYSIZE(nid.szTip));
@@ -40,7 +43,7 @@ BOOL DeleteNotificationIcon()
 {
 	NOTIFYICONDATA nid = { sizeof(nid) };
 	nid.uFlags = NIF_GUID;
-	nid.guidItem = __uuidof(SystemTrayIconUUID);
+	nid.guidItem = kSystemTrayIconGuid;
 	return Shell_NotifyIcon(NIM_DELETE, &nid);
 }
 
@@ -87,7 +90,7 @@ BOOL ShowLowInkBalloon(HINSTANCE hInstance)
 	// Display a low ink balloon message. This is a warning, so show the appropriate system icon.
 	NOTIFYICONDATA nid = { sizeof(nid) };
 	nid.uFlags = NIF_INFO | NIF_GUID;
-	nid.guidItem = __uuidof(SystemTrayIconUUID);
+	nid.guidItem = kSystemTrayIconGuid;
 	// respect quiet time since this balloon did not come from a direct user action.
 	nid.dwInfoFlags = NIIF_WARNING | NIIF_RESPECT_QUIET_TIME;
 	LoadString(hInstance, IDS_APP_TITLE, nid.szInfo, ARRAYSIZE(nid.szInfo));

@@ -262,3 +262,6 @@ __pycache__/
 logs*.txt
 /ActiveWindowsLogger.zip
 /Screenshot_1.png
+
+# CMake build directories
+/build*/
